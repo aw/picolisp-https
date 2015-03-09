@@ -11,7 +11,7 @@ git submodule update
 
 cd vendor/neon
   ./autogen.sh
-  ./configure --enable-shared
+  ./configure --enable-shared --with-ssl=openssl --enable-threadsafe-ssl=posix
   make
 cd -
 
