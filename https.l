@@ -59,7 +59,7 @@
       (set-headers Headers Request)
 
       (let (Filename (request-dispatch Request Session)
-            Response (parse-response Request Filename) )
+            Response (parse-response Request Filename Fullurl) )
 
         (end-session Session)
         Response ]

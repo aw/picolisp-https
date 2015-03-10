@@ -63,7 +63,7 @@
       (link (cons (car Name) (car Value)))
       (get-headers Request Recursor) ]
 
-[de parse-response (Request Filename)
+[de parse-response (Request Filename Fullurl)
   (let (Headers   (make (get-headers Request 0))
         Status    (struct (ne-get-status Request) '(I I I I S))
         Version   (pack "HTTP/" (car Status) "." (cadr Status))
@@ -76,6 +76,7 @@
           (cons "Version"   . Version)
           (cons "Code"      . Code)
           (cons "Message"   . Message)
+          (cons "Url"       . Fullurl)
           (cons "Headers"     Headers) ]
 
 [de create-session (Fullurl)
