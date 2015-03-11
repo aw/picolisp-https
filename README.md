@@ -48,11 +48,21 @@ pil +
 
 (symbols 'https)
 
-(get-file
-  "https://google.com/404"
-  ("User-Agent" . "picolisp-https") )
+(pretty
+  (get-file
+    "https://google.com/404"
+    '(("User-Agent" . "picolisp-https")) ) )
 
--> (("Filename" . "/home/aw/.pil/tmp/29340/dl-5d32e316.tmp") ("Filesize" . 1435) ("Version" . "HTTP/1.1") ("Code" . 404) ("Message" . "Not Found") ("Url" . "https://google.com/404") ("Headers" ("date" . "Tue, 10 Mar 2015 05:40:17 GMT") ("content-length" . "1435") ("server" . "GFE/2.0") ("content-type" . "text/html; charset=UTF-8")))
+-> (("Filename" . "/home/aw/.pil/tmp/1689/dl-fc6ccf5.tmp")
+    ("Filesize" . 1428)
+    ("Version" . "HTTP/1.1")
+    ("Code" . 404)
+    ("Message" . "Not Found")
+    ("Url" . "https://google.com/404")
+    ("Headers"  ("date" . "Wed, 11 Mar 2015 05:54:07 GMT")
+                ("content-length" . "1428")
+                ("server" . "GFE/2.0")
+                ("content-type" . "text/html; charset=UTF-8") ) )
 ```
 
 # TODO
