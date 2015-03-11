@@ -25,6 +25,13 @@
 
     (cons Session Path) ]
 
+[de create-session-request (Method Url Headers)
+  (let ((Session . Path) (create-session Url)
+        Request (ne-request-create Session Method Path) )
+
+    (set-headers Headers Request)
+    (list Session Path Request) ]
+
 [de parse-uri (Fullurl)
   (let Result
     (ne-uri-parse Fullurl '(60 (S S S I I S S S I))) # *ne_uri URI structure (60 Bytes)
@@ -40,46 +47,33 @@
         "?"
         (ne-path-escape Query) ]
 
-(de create-get-request (Session Path)
-  (ne-request-create Session "GET" Path) )
-
 [de set-headers (Headers Request)
   (mapcar
     '((L) (ne-add-request-header Request (car L) (cdr L)))
     Headers ]
 
 [de request-dispatch (Request Session _readbody) # _readbody is function which processes a response body
-  (unless
-    (= *NE_OK (ne-begin-request Request))
-    (exit-with-error Session) )
+  (begin-request)
 
-  (let (Body    (when (fun? _readbody) (_readbody))
-        Result  (ne-end-request Request) )
+  (let Body (when (fun? _readbody) (_readbody))
+    (end-request)
+    Body ]
 
-    (cond ((= *NE_RETRY Result) (wait 1000) (request-dispatch Request Session _readbody))
-          ((unless (= *NE_OK Result) (exit-with-error Session)))
-          (T Body) ]
+[de process-body ()
+  (cons "Body" . "noop") ]
 
-# returns NIL because we don't need the Fd
-[de download-file () # Filename and Request will be closed-over
-  (let Fd (open Filename)
-    (ne-read-response-to-fd Request Fd)
-    (close Fd)
-    NIL ]
-
-(de create-tmp-filename ()
-  (tmp (pack "dl-" (random-id) ".tmp")) )
-
-[de parse-response (Request Fullurl Filename)
+[de parse-response (Request Fullurl Output)
   (let (Headers   (make (get-headers Request 0))
         Status    (struct (ne-get-status Request) '(I I I I S)) # *ne_status Status structure
         Version   (pack "HTTP/" (car Status) "." (cadr Status))
         Code      (; Status 3)
         Message   (; Status 5)
-        Filesize  (car (info Filename)) )
+        Result    (if (lst? Output)
+                      Output
+                      (list (cons "Filename"  . Output)
+                            (cons "Filesize"    (car (info Output))) ) ) )
 
-    (list (cons "Filename"  . Filename)
-          (cons "Filesize"  . Filesize)
+    (list Result
           (cons "Version"   . Version)
           (cons "Code"      . Code)
           (cons "Message"   . Message)
@@ -102,3 +96,22 @@
 
 (de extract-header (Response Name)
   (cdr (assoc Name (cdr (assoc "Headers" Response)))) )
+
+# WARNING: closures, variables rely on their context
+# this could potentially be the source of many bugs, look here first ;)
+[de begin-request () # closed-over: Request, Session
+  (unless (= *NE_OK (ne-begin-request Request))
+          (exit-with-error Session) ]
+
+[de end-request () # closed-over: Request, Session, _readbody
+  (let Result (ne-end-request Request)
+    (cond ((= *NE_RETRY Result) (wait 1000)
+                                (request-dispatch Request Session _readbody) )
+          ((unless  (= *NE_OK Result)
+                    (exit-with-error Session) ]
+
+[de download-file () # closed-over: Filename, Request
+  (let Fd (open Filename)
+    (ne-read-response-to-fd Request Fd)
+    (close Fd)
+    Filename ]

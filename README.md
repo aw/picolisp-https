@@ -33,11 +33,11 @@ The `https.l` file searches for `lib/libneon.so`, relative to its current direct
 
 All functions are publicly accessible and namespaced with `(symbols 'https)` (or the prefix: `https~`), but only the following are necessary:
 
-  * `get-file`: downloads a file from `Fullurl` and appends `Headers` to the `GET` request
+  * `req-get`: downloads a file from `Fullurl` and appends `Headers` to the `GET` request
 
 A successful result will return a list containing the file name, size, status code, and HTTP headers. A failure returns `NIL` and might possibly quit.
 
-# Example (get-file Url Headers)
+# Example (req-get Url Headers Destination)
 
 In this example, we try to fetch from a URL that doesn't exist, and receive a response body, headers, and other useful information.
 
@@ -49,9 +49,10 @@ pil +
 (symbols 'https)
 
 (pretty
-  (req-get-file
+  (req-get
     "https://google.com/404"
-    '(("User-Agent" . "picolisp-https")) ) )
+    '(("User-Agent" . "picolisp-https"))
+    (random-filename) ) )
 
 -> (("Filename" . "/home/aw/.pil/tmp/1689/dl-fc6ccf5.tmp")
     ("Filesize" . 1428)
@@ -67,7 +68,6 @@ pil +
 
 # TODO
 
-* Ability to follow redirects from status codes 302, 307.
 * Other HTTP methods such as HEAD, POST, PUT.
 * Better error handling (don't quit)
 

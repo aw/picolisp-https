@@ -53,17 +53,15 @@
 
 
 # public
-[de req-get-file (Fullurl Headers Destination)
-  (let ((Session . Path) (create-session Fullurl))
-    (let (Request   (create-get-request Session Path)
-          Filename  (if Destination
-                        @
-                        (create-tmp-filename) ) )
+(de random-filename ()
+  (tmp (pack "dl-" (random-id) ".tmp")) )
 
-      (set-headers Headers Request)
-      (request-dispatch Request Session download-file)
+[de req-get (Url Headers Filename)
+  (let ((Session Path Request) (create-session-request "GET" Url Headers))
+    (let (Output (if  Filename
+                      (request-dispatch Request Session download-file)
+                      (request-dispatch Request Session process-body) )
+          Response (parse-response Request Url Output) )
 
-      (let Response (parse-response Request Fullurl Filename)
-
-        (end-request-session Request Session)
-        Response ]
+      (end-request-session Request Session)
+      Response ]
