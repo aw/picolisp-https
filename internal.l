@@ -13,12 +13,20 @@
 [de random-id ()
   (lowc (hex (abs (rand) ]
 
+[de create-session (Fullurl)
+  (let (Uri     (parse-uri Fullurl)
+        Scheme  (car Uri)
+        Host    (cadr Uri)
+        Port    (get-port Scheme (; Uri 4))
+        Session (ne-session-create Scheme Host Port)
+        Path    (pack-path (; Uri 6) (; Uri 7)) )
+
+    (cons Session Path) ]
+
 [de parse-uri (Fullurl)
   (let Result
-    (ne-uri-parse Fullurl '(60 (S S S I I S S S I))) # parsed URI structure (60 Bytes)
-    (if (=0 (car Result))
-        (cadr Result)
-        (exit-with-error NIL "Could not parse URI") ]
+    (ne-uri-parse Fullurl '(60 (S S S I I S S S I))) # *ne_uri URI structure (60 Bytes)
+    (when (=0 (car Result)) (cadr Result)) ]
 
 [de get-port (Scheme Port)
   (if (> Port 0)
@@ -30,40 +38,38 @@
         "?"
         (ne-path-escape Query) ]
 
-[de set-headers (Headers Request)
-  (for L Headers
-    (apply ne-add-request-header (list Request (car L) (cdr L))) ]
-
 (de create-get-request (Session Path)
   (ne-ssl-trust-default-ca Session)
   (ne-request-create Session "GET" Path) )
 
-[de request-dispatch (Request Session)
+[de set-headers (Headers Request)
+  (mapcar
+    '((L) (ne-add-request-header Request (car L) (cdr L)))
+    Headers ]
+
+[de request-dispatch (Request Session _readbody) # _readbody is function which processes a response body
   (unless
     (= *NE_OK (ne-begin-request Request))
     (exit-with-error Session) )
 
-  (let (Filename (download-file Request)
-        Result (ne-end-request Request) )
+  (let (Body    (when (fun? _readbody) (_readbody))
+        Result  (ne-end-request Request) )
 
-    (cond ((= *NE_RETRY Result) (wait 1000) (request-dispatch Request Session))
+    (cond ((= *NE_RETRY Result) (wait 1000) (request-dispatch Request Session _readbody))
           ((unless (= *NE_OK Result) (exit-with-error Session)))
-          (T Filename) ]
+          (T Body) ]
 
-[de download-file (Request)
-  (let (Filename (pack "dl-" (random-id) ".tmp")
-        Fd (open (tmp Filename)) )
+# returns NIL because we don't need the Fd
+[de download-file () # Filename and Request will be closed-over
+  (let Fd (open Filename)
     (ne-read-response-to-fd Request Fd)
     (close Fd)
-    (pack (tmp) Filename) ]
+    NIL ]
 
-[de get-headers (Request Cursor)
-  (let ((Recursor Name Value) (ne-response-header-iterate Request Cursor '(N S) '(N S)))
-    (when (> Recursor 0)
-      (link (cons (car Name) (car Value)))
-      (get-headers Request Recursor) ]
+(de create-tmp-filename ()
+  (tmp (pack "dl-" (random-id) ".tmp")) )
 
-[de parse-response (Request Filename Fullurl)
+[de parse-response (Request Fullurl Filename)
   (let (Headers   (make (get-headers Request 0))
         Status    (struct (ne-get-status Request) '(I I I I S))
         Version   (pack "HTTP/" (car Status) "." (cadr Status))
@@ -79,15 +85,15 @@
           (cons "Url"       . Fullurl)
           (cons "Headers"     Headers) ]
 
-[de create-session (Fullurl)
-  (let (Uri     (parse-uri Fullurl)
-        Scheme  (car Uri)
-        Host    (cadr Uri)
-        Port    (get-port Scheme (; Uri 4))
-        Session (ne-session-create Scheme Host Port)
-        Path    (pack-path (; Uri 6) (; Uri 7)) )
+[de get-headers (Request Cursor)
+  (let ((Recursor Name Value) (ne-response-header-iterate Request Cursor '(N S) '(N S)))
+    (when (> Recursor 0)
+      (link (cons (car Name) (car Value)))
+      (get-headers Request Recursor) ]
 
-    (cons Session Path) ]
+(de end-request-session (Request Session)
+  (ne-request-destroy Request)
+  (end-session Session) )
 
 (de end-session (Session)
   (ne-close-connection Session)

@@ -49,7 +49,7 @@ pil +
 (symbols 'https)
 
 (pretty
-  (get-file
+  (req-get-file
     "https://google.com/404"
     '(("User-Agent" . "picolisp-https")) ) )
 
@@ -70,7 +70,6 @@ pil +
 * Ability to follow redirects from status codes 302, 307.
 * Other HTTP methods such as HEAD, POST, PUT.
 * Better error handling (don't quit)
-* Configurable file download path
 
 # Contributing
 

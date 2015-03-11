@@ -53,13 +53,17 @@
 
 
 # public
-[de get-file (Fullurl Headers)
+[de req-get-file (Fullurl Headers Destination)
   (let ((Session . Path) (create-session Fullurl))
-    (let Request (create-get-request Session Path)
+    (let (Request   (create-get-request Session Path)
+          Filename  (if Destination
+                        @
+                        (create-tmp-filename) ) )
+
       (set-headers Headers Request)
+      (request-dispatch Request Session download-file)
 
-      (let (Filename (request-dispatch Request Session)
-            Response (parse-response Request Filename Fullurl) )
+      (let Response (parse-response Request Fullurl Filename)
 
-        (end-session Session)
+        (end-request-session Request Session)
         Response ]
