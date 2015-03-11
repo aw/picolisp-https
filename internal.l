@@ -21,6 +21,8 @@
         Session (ne-session-create Scheme Host Port)
         Path    (pack-path (; Uri 6) (; Uri 7)) )
 
+    (when (= Scheme "https") (ne-ssl-trust-default-ca Session))
+
     (cons Session Path) ]
 
 [de parse-uri (Fullurl)
@@ -39,7 +41,6 @@
         (ne-path-escape Query) ]
 
 (de create-get-request (Session Path)
-  (ne-ssl-trust-default-ca Session)
   (ne-request-create Session "GET" Path) )
 
 [de set-headers (Headers Request)
@@ -71,7 +72,7 @@
 
 [de parse-response (Request Fullurl Filename)
   (let (Headers   (make (get-headers Request 0))
-        Status    (struct (ne-get-status Request) '(I I I I S))
+        Status    (struct (ne-get-status Request) '(I I I I S)) # *ne_status Status structure
         Version   (pack "HTTP/" (car Status) "." (cadr Status))
         Code      (; Status 3)
         Message   (; Status 5)
@@ -98,3 +99,6 @@
 (de end-session (Session)
   (ne-close-connection Session)
   (ne-session-destroy Session) )
+
+(de extract-header (Response Name)
+  (cdr (assoc Name (cdr (assoc "Headers" Response)))) )
