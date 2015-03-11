@@ -48,11 +48,11 @@ pil +
 
 (symbols 'https)
 
-(let (Url "https://google.com/index.html?q=recursion"
-      Headers '(("Referer" . "http://test.com") ("User-Agent" . "picolisp-https")) )
-  (get-file Url Headers) )
+(get-file
+  "https://google.com/404"
+  ("User-Agent" . "picolisp-https") )
 
--> (("Filename" . "/home/aw/.pil/tmp/29340/dl-5d32e316.tmp") ("Filesize" . 1435) ("Version" . "HTTP/1.1") ("Code" . 404) ("Message" . "Not Found") ("Url" . "https://google.com/index.html?q=recursion") ("Headers" ("date" . "Tue, 10 Mar 2015 05:40:17 GMT") ("content-length" . "1435") ("server" . "GFE/2.0") ("content-type" . "text/html; charset=UTF-8")))
+-> (("Filename" . "/home/aw/.pil/tmp/29340/dl-5d32e316.tmp") ("Filesize" . 1435) ("Version" . "HTTP/1.1") ("Code" . 404) ("Message" . "Not Found") ("Url" . "https://google.com/404") ("Headers" ("date" . "Tue, 10 Mar 2015 05:40:17 GMT") ("content-length" . "1435") ("server" . "GFE/2.0") ("content-type" . "text/html; charset=UTF-8")))
 ```
 
 # TODO

@@ -18,10 +18,10 @@
 
 # returns the result in 'car', parsed URI in 'cdr'
 [de ne-uri-parse (Uri &ne_uri)
-  (use P
+  (use Parsed
     (cons
-      (native `*Https "ne_uri_parse" 'I Uri (list 'P &ne_uri))
-      P ]
+      (native `*Https "ne_uri_parse" 'I Uri (list 'Parsed &ne_uri))
+      Parsed ]
 
 (de ne-uri-defaultport (Scheme)
   (native `*Https "ne_uri_defaultport" 'I Scheme) )
