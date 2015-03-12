@@ -37,8 +37,7 @@
           "//"
           (caddr Url)
           "/"
-          (let Path (split (chop (glue "/" (cdddr Url))) "?")
-            (pack-path (pack (car Path)) (glue "?" (cdr Path))) ) ]
+          (split-pack-path Url) ]
 
 [de parse-uri (Fullurl)
   (let Result
@@ -49,6 +48,10 @@
   (if (> Port 0)
       Port
       (ne-uri-defaultport Scheme) ]
+
+[de split-pack-path (Url)
+  (let Path (split (chop (glue "/" (cdddr Url))) "?")
+    (pack-path (pack (car Path)) (glue "?" (cdr Path))) ]
 
 [de pack-path (Path Query)
   (pack (ne-path-escape Path)
@@ -72,13 +75,9 @@
         Status    (struct (ne-get-status Request) '(I I I I S)) # *ne_status Status structure
         Version   (pack "HTTP/" (car Status) "." (cadr Status))
         Code      (; Status 3)
-        Message   (; Status 5)
-        Result    (if (lst? Output)
-                      Output
-                      (list (cons "Filename"  . Output)
-                            (cons "Filesize"    (car (info Output))) ) ) )
+        Message   (; Status 5) )
 
-    (list Result
+    (list Output
           (cons "Version"   . Version)
           (cons "Code"      . Code)
           (cons "Message"   . Message)
@@ -109,6 +108,9 @@
   (let Result (ne-read-response-block Request '(`*Buffer_size B . `*Buffer_size) *Buffer_size)
     (link (pack-body Result)) ]
 
+(de random-filename ()
+  (tmp (pack "dl-" (random-id) ".tmp")) )
+
 # WARNING: variables rely on their context (dynamic scope)
 # this could potentially be the source of many bugs, look here first ;)
 [de begin-request ()
@@ -126,7 +128,8 @@
   (let Fd (open Filename)
     (ne-read-response-to-fd Request Fd)
     (close Fd)
-    Filename ]
+    (list (cons "Filename"  . Filename)
+          (cons "Filesize"    (car (info Filename))) ]
 
 [de process-body ()
   (let Body

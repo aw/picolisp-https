@@ -48,7 +48,7 @@ pil +
   (req-get
     "https://google.com/404"
     '(("User-Agent" . "picolisp-https"))
-    (random-filename) ) )
+    T ) )
 
 -> (("Filename" . "/home/aw/.pil/tmp/1689/dl-fc6ccf5.tmp")
     ("Filesize" . 1428)

@@ -55,16 +55,18 @@
 
 
 # public
-(de random-filename ()
-  (tmp (pack "dl-" (random-id) ".tmp")) )
-
 (de req-head (Url Headers)
-  (make-request "HEAD" Url Headers) )
+  (req  "HEAD" Url Headers) )
 
-(de req-get (Url Headers Filename)
-  (make-request "GET" Url Headers Filename) )
+[de req-get (Url Headers Filename)
+  (req  "GET"
+        Url
+        Headers
+        (if (=T Filename)
+            (random-filename)
+            Filename ) ]
 
-[de make-request (Method Url Headers Filename)
+[de req (Method Url Headers Filename)
   (let ((Session Path Request) (create-session-request Method Url Headers))
     (let (Output (if  Filename
                       (request-dispatch Request Session download-file)
