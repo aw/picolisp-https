@@ -1,12 +1,8 @@
-# HTTP(S) (Neon) FFI Bindings
+# HTTP(S) (Neon) FFI Bindings for PicoLisp
 
-[HTTPS](http://www.webdav.org/neon/) (Neon) FFI bindings for [PicoLisp](http://picolisp.com/).
+[![GitHub release](https://img.shields.io/github/release/aw/picolisp-https.svg)](https://github.com/aw/picolisp-https) [![Dependency](https://img.shields.io/badge/[deps] Neon-0.30.1-ff69b4.svg)](https://github.com/aw/neon-unofficial-mirror)
 
-This library can be used to make HTTP and HTTPS requests.
-
-# Version
-
-**v0.30.1.0** (uses Neon v_0.30.1_)
+This library can be used to make HTTP and HTTPS requests in [PicoLisp](http://picolisp.com).
 
 # Requirements
 
