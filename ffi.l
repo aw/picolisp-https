@@ -47,7 +47,6 @@
 (de ne-end-request (Request)
   (native `*Https "ne_end_request" 'I Request) )
 
-# Set Length to NIL and ne_read_response_block will automatically calculate the size
 # returns the result in 'car', value of &buffer in 'cdr'
 (de ne-read-response-block (Request &buffer Length)
   (use Buf

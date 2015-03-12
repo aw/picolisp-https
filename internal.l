@@ -125,11 +125,15 @@
                     (throw-error Session) ]
 
 [de download-file ()
-  (let Fd (open Filename)
-    (ne-read-response-to-fd Request Fd)
-    (close Fd)
-    (list (cons "Filename"  . Filename)
-          (cons "Filesize"    (car (info Filename))) ]
+  (let File (if (=T Filename)
+                (random-filename)
+                Filename )
+
+    (let Fd (open File)
+      (ne-read-response-to-fd Request Fd)
+      (close Fd)
+      (list (cons "Filename"  . File)
+            (cons "Filesize"    (car (info File))) ]
 
 [de process-body ()
   (let Body
