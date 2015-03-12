@@ -135,4 +135,4 @@
         (> (car (link-response-block Request))
             0 ]
 
-    (cons "Body" (glue "" Body)) ]
+    (cons "Body" (pack Body)) ]

@@ -64,7 +64,7 @@ pil +
 
 # TODO
 
-* Other HTTP methods such as HEAD, POST, PUT.
+* Other HTTP methods such as POST, PUT.
 * Better error handling (don't quit)
 
 # Contributing
