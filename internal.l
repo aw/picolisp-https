@@ -4,22 +4,21 @@
 #
 # Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
 
-(de exit-with-error (Session Message)
-  (prinl "ERROR: "  (if Session
-                        (ne-get-error Session)
-                        Message ) )
-  (bye 1) )
+[de throw-error (Session Message)
+  (throw 'InternalError (cons 'HttpsError (if Session
+                                              (ne-get-error Session)
+                                              Message ]
 
 [de random-id ()
   (lowc (hex (abs (rand) ]
 
 [de create-session (Fullurl)
-  (let (Uri     (parse-uri Fullurl)
+  (let (Uri     (parse-uri (escape-path Fullurl))
         Scheme  (car Uri)
         Host    (cadr Uri)
         Port    (get-port Scheme (; Uri 4))
         Session (ne-session-create Scheme Host Port)
-        Path    (pack-path (; Uri 6) (; Uri 7)) )
+        Path    (pack (; Uri 6) "?" (; Uri 7)) )
 
     (when (= Scheme "https") (ne-ssl-trust-default-ca Session))
 
@@ -31,6 +30,15 @@
 
     (set-headers Headers Request)
     (list Session Path Request) ]
+
+[de escape-path (Fullurl)
+  (let Url (split (chop Fullurl) "/")
+    (pack (car Url)
+          "//"
+          (caddr Url)
+          "/"
+          (let Path (split (chop (glue "/" (cdddr Url))) "?")
+            (pack-path (pack (car Path)) (glue "?" (cdr Path))) ) ]
 
 [de parse-uri (Fullurl)
   (let Result
@@ -58,9 +66,6 @@
   (let Body (when (fun? _readbody) (_readbody))
     (end-request)
     Body ]
-
-[de process-body ()
-  (cons "Body" . "noop") ]
 
 [de parse-response (Request Fullurl Output)
   (let (Headers   (make (get-headers Request 0))
@@ -97,21 +102,37 @@
 (de extract-header (Response Name)
   (cdr (assoc Name (cdr (assoc "Headers" Response)))) )
 
-# WARNING: closures, variables rely on their context
-# this could potentially be the source of many bugs, look here first ;)
-[de begin-request () # closed-over: Request, Session
-  (unless (= *NE_OK (ne-begin-request Request))
-          (exit-with-error Session) ]
+[de pack-body (Result)
+  (pack (mapcar char (head (car Result) (cdr Result) ]
 
-[de end-request () # closed-over: Request, Session, _readbody
+[de link-response-block (Request)
+  (let Result (ne-read-response-block Request '(`*Buffer_size B . `*Buffer_size) *Buffer_size)
+    (link (pack-body Result)) ]
+
+# WARNING: variables rely on their context (dynamic scope)
+# this could potentially be the source of many bugs, look here first ;)
+[de begin-request ()
+  (unless (= *NE_OK (ne-begin-request Request))
+          (throw-error Session) ]
+
+[de end-request ()
   (let Result (ne-end-request Request)
     (cond ((= *NE_RETRY Result) (wait 1000)
                                 (request-dispatch Request Session _readbody) )
           ((unless  (= *NE_OK Result)
-                    (exit-with-error Session) ]
+                    (throw-error Session) ]
 
-[de download-file () # closed-over: Filename, Request
+[de download-file ()
   (let Fd (open Filename)
     (ne-read-response-to-fd Request Fd)
     (close Fd)
     Filename ]
+
+[de process-body ()
+  (let Body
+    [make
+      (while
+        (> (car (link-response-block Request))
+            0 ]
+
+    (cons "Body" (glue "" Body)) ]

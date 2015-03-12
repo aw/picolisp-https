@@ -12,6 +12,8 @@
 
 (setq
   *Https             "lib/libneon.so"
+  *Buffer_size       8192
+  *Headers           '(("Accept" . "*/*") ("User-Agent" . "picolisp-https") ("Accept-Charset" . "utf-8"))
 
   *NE_FEATURE_SSL    1
   *NE_FEATURE_ZLIB   2
@@ -41,13 +43,13 @@
 
 # initialize
 (when (=0 (ne-has-support *NE_FEATURE_SSL))
-      (prinl "Missing support for SSL/TLS") (bye 1) )
+      (throw-error NIL "Missing support for SSL/TLS") )
 
 (when (=0 (ne-has-support *NE_FEATURE_TS_SSL))
-      (prinl "Missing support for thread-safe SSL") (bye 1) )
+      (throw-error NIL "Missing support for thread-safe SSL") )
 
 (unless (= *NE_OK (ne-sock-init))
-        (prinl "Could not initiate socket") (bye 1) )
+        (throw-error NIL "Could not initiate socket") )
 
 (seed (in "/dev/urandom" (rd 20)))
 
@@ -56,8 +58,14 @@
 (de random-filename ()
   (tmp (pack "dl-" (random-id) ".tmp")) )
 
-[de req-get (Url Headers Filename)
-  (let ((Session Path Request) (create-session-request "GET" Url Headers))
+(de req-head (Url Headers)
+  (make-request "HEAD" Url Headers) )
+
+(de req-get (Url Headers Filename)
+  (make-request "GET" Url Headers Filename) )
+
+[de make-request (Method Url Headers Filename)
+  (let ((Session Path Request) (create-session-request Method Url Headers))
     (let (Output (if  Filename
                       (request-dispatch Request Session download-file)
                       (request-dispatch Request Session process-body) )
