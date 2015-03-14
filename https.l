@@ -11,29 +11,31 @@
     ("install"    "build.sh") ]
 
 (setq
-  *Https             "lib/libneon.so"
-  *Buffer_size       8192
-  *Headers           '(("Accept" . "*/*") ("User-Agent" . "picolisp-https") ("Accept-Charset" . "utf-8"))
+  *Https              "lib/libneon.so"
+  *Buffer_size        8192
+  *Headers            '(("Accept" . "*/*")
+                        ("Accept-Charset" . "utf-8")
+                        ("User-Agent" . "picolisp-https") )
 
-  *NE_FEATURE_SSL    1
-  *NE_FEATURE_ZLIB   2
-  *NE_FEATURE_IPV6   3
-  *NE_FEATURE_LFS    4
-  *NE_FEATURE_SOCKS  5
-  *NE_FEATURE_TS_SSL 6
-  *NE_FEATURE_I18N   7
-  *NE_FEATURE_SSPI   8
+  *NE_FEATURE_SSL     1
+  *NE_FEATURE_ZLIB    2
+  *NE_FEATURE_IPV6    3
+  *NE_FEATURE_LFS     4
+  *NE_FEATURE_SOCKS   5
+  *NE_FEATURE_TS_SSL  6
+  *NE_FEATURE_I18N    7
+  *NE_FEATURE_SSPI    8
 
-  *NE_OK             0
-  *NE_ERROR          1
-  *NE_LOOKUP         2
-  *NE_AUTH           3
-  *NE_PROXYAUTH      4
-  *NE_CONNECT        5
-  *NE_TIMEOUT        6
-  *NE_FAILED         7
-  *NE_RETRY          8
-  *NE_REDIRECT       9 )
+  *NE_OK              0
+  *NE_ERROR           1
+  *NE_LOOKUP          2
+  *NE_AUTH            3
+  *NE_PROXYAUTH       4
+  *NE_CONNECT         5
+  *NE_TIMEOUT         6
+  *NE_FAILED          7
+  *NE_RETRY           8
+  *NE_REDIRECT        9 )
 
 # ffi-bindings
 (load "ffi.l")
@@ -55,14 +57,20 @@
 
 
 # public
-(de req-head (Url Headers)
-  (req  "HEAD" Url Headers) )
-
 (de req-get (Url Headers Filename)
   (req  "GET" Url Headers Filename) )
 
+(de req-head (Url Headers)
+  (req  "HEAD" Url Headers) )
+
 (de req-post (Url Headers Filename Body)
   (req  "POST" Url Headers Filename Body) )
+
+(de req-put (Url Headers Filename Body)
+  (req  "PUT" Url Headers Filename Body) )
+
+(de req-delete (Url Headers Filename)
+  (req  "DELETE" Url Headers Filename) )
 
 [de req (Method Url Headers Filename Body)
   (let ((Session Path Request) (create-session-request Method Url Headers))

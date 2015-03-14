@@ -62,10 +62,6 @@ pil +
                 ("content-type" . "text/html; charset=UTF-8") ) )
 ```
 
-# TODO
-
-* Other HTTP methods such as POST, PUT.
-
 # Contributing
 
 If you find any bugs or issues, please [create an issue](https://github.com/aw/picolisp-https/issues/new).
