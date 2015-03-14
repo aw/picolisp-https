@@ -74,11 +74,9 @@
 
 [de req (Method Url Headers Filename Body)
   (let ((Session Path Request) (create-session-request Method Url Headers))
-    (let (Buffer (set-request-body Body)
-          Output (if  Filename
-                      (request-dispatch Request Session download-file)
-                      (request-dispatch Request Session process-body) )
-          Response (parse-response Request Url Output) )
+    (let (Buffer    (set-request-body Body)
+          Output    (request-dispatch Request Session)
+          Response  (parse-response Request Url Output) )
 
         (end-request-session Request Session Buffer)
         Response ]

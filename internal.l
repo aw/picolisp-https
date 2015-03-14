@@ -63,12 +63,35 @@
     '((L) (ne-add-request-header Request (car L) (cdr L)))
     (append Headers *Headers) ]
 
-[de request-dispatch (Request Session _readbody) # _readbody is function which processes a response body
+[de request-dispatch (Request Session)
   (begin-request)
 
-  (let Body (when (fun? _readbody) (_readbody))
+  (let Body (if Filename
+                (download-file Request Filename)
+                (process-body Request) )
+
     (end-request)
     Body ]
+
+[de download-file (Request Filename)
+  (let File (if (=T Filename)
+                (random-filename)
+                Filename )
+
+    (let Fd (open File)
+      (ne-read-response-to-fd Request Fd)
+      (close Fd)
+      (list (cons "Filename"  . File)
+            (cons "Filesize"    (car (info File))) ]
+
+[de process-body (Request)
+  (let Body
+    [make
+      (while
+        (> (car (link-response-block Request))
+            0 ]
+
+    (cons "Body" (pack Body)) ]
 
 [de parse-response (Request Fullurl Output)
   (let (Headers   (make (get-headers Request 0))
@@ -122,8 +145,8 @@
         (ne-set-request-body-buffer Request Buffer Size)
         Buf ]
 
-# WARNING: variables rely on their context (dynamic scope)
-# this could potentially be the source of many bugs, look here first ;)
+# Request and Session rely on their context (dynamic scope)
+# in case of bugs, look here first ;)
 [de begin-request ()
   (unless (= *NE_OK (ne-begin-request Request))
           (throw-error Session) ]
@@ -131,26 +154,6 @@
 [de end-request ()
   (let Result (ne-end-request Request)
     (cond ((= *NE_RETRY Result) (wait 1000)
-                                (request-dispatch Request Session _readbody) )
+                                (request-dispatch Request Session) )
           ((unless  (= *NE_OK Result)
                     (throw-error Session) ]
-
-[de download-file ()
-  (let File (if (=T Filename)
-                (random-filename)
-                Filename )
-
-    (let Fd (open File)
-      (ne-read-response-to-fd Request Fd)
-      (close Fd)
-      (list (cons "Filename"  . File)
-            (cons "Filesize"    (car (info File))) ]
-
-[de process-body ()
-  (let Body
-    [make
-      (while
-        (> (car (link-response-block Request))
-            0 ]
-
-    (cons "Body" (pack Body)) ]
