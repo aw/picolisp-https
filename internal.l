@@ -18,7 +18,7 @@
         Host    (cadr Uri)
         Port    (get-port Scheme (; Uri 4))
         Session (ne-session-create Scheme Host Port)
-        Path    (pack (; Uri 6) "?" (; Uri 7)) )
+        Path    (pack (; Uri 6) (when (; Uri 7) (pack "?" (; Uri 7)))) )
 
     (when (= Scheme "https") (ne-ssl-trust-default-ca Session))
 
@@ -55,13 +55,13 @@
 
 [de pack-path (Path Query)
   (pack (ne-path-escape Path)
-        "?"
-        (ne-path-escape Query) ]
+        (when Query
+              (pack "?" (ne-path-escape Query)) ]
 
 [de set-headers (Headers Request)
   (mapcar
     '((L) (ne-add-request-header Request (car L) (cdr L)))
-    Headers ]
+    (append Headers *Headers) ]
 
 [de request-dispatch (Request Session _readbody) # _readbody is function which processes a response body
   (begin-request)
@@ -90,7 +90,8 @@
       (link (cons (car Name) (car Value)))
       (get-headers Request Recursor) ]
 
-(de end-request-session (Request Session)
+(de end-request-session (Request Session Buffer)
+  (when Buffer (native "@" "free" NIL Buffer))
   (ne-request-destroy Request)
   (end-session Session) )
 
@@ -110,6 +111,16 @@
 
 (de random-filename ()
   (tmp (pack "dl-" (random-id) ".tmp")) )
+
+[de set-request-body (Body)
+  (when Body
+    (let (Size (size Body)
+          Buf (native "@" "malloc" 'N Size) )
+
+      (native "@" "memset" NIL Buf Body Size)
+      (let Buffer (native "@" "strncpy" 'N Buf Body Size)
+        (ne-set-request-body-buffer Request Buffer Size)
+        Buf ]
 
 # WARNING: variables rely on their context (dynamic scope)
 # this could potentially be the source of many bugs, look here first ;)

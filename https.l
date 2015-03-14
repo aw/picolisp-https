@@ -61,12 +61,16 @@
 (de req-get (Url Headers Filename)
   (req  "GET" Url Headers Filename) )
 
-[de req (Method Url Headers Filename)
+(de req-post (Url Headers Filename Body)
+  (req  "POST" Url Headers Filename Body) )
+
+[de req (Method Url Headers Filename Body)
   (let ((Session Path Request) (create-session-request Method Url Headers))
-    (let (Output (if  Filename
+    (let (Buffer (set-request-body Body)
+          Output (if  Filename
                       (request-dispatch Request Session download-file)
                       (request-dispatch Request Session process-body) )
           Response (parse-response Request Url Output) )
 
-      (end-request-session Request Session)
-      Response ]
+        (end-request-session Request Session Buffer)
+        Response ]

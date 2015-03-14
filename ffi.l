@@ -60,6 +60,9 @@
 (de ne-read-response-to-fd (Request Fd)
   (native `*Https "ne_read_response_to_fd" 'I Request Fd) )
 
+(de ne-set-request-body-buffer (Request Buffer Size)
+  (native `*Https "ne_set_request_body_buffer" NIL Request Buffer Size) )
+
 (de ne-request-destroy (Request)
   (native `*Https "ne_request_destroy" NIL Request) )
 
