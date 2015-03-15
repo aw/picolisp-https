@@ -57,6 +57,9 @@
 
 
 # public
+(de uriparse (Url)
+  (parse-uri Url) )
+
 (de req-get (Url Headers Filename)
   (req  "GET" Url Headers Filename) )
 

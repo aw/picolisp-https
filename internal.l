@@ -13,12 +13,12 @@
   (lowc (hex (abs (rand) ]
 
 [de create-session (Fullurl)
-  (let (Uri     (parse-uri (escape-path Fullurl))
+  (let (Uri     (parse-uri Fullurl)
         Scheme  (car Uri)
         Host    (cadr Uri)
         Port    (get-port Scheme (; Uri 4))
         Session (ne-session-create Scheme Host Port)
-        Path    (pack (; Uri 6) (when (; Uri 7) (pack "?" (; Uri 7)))) )
+        Path    (pack (; Uri 5) (when (; Uri 6) (pack "?" (; Uri 6)))) )
 
     (when (= Scheme "https") (ne-ssl-trust-default-ca Session))
 
@@ -31,32 +31,17 @@
     (set-headers Headers Request)
     (list Session Path Request) ]
 
-[de escape-path (Fullurl)
-  (let Url (split (chop Fullurl) "/")
-    (pack (car Url)
-          "//"
-          (caddr Url)
-          "/"
-          (split-pack-path Url) ]
-
 [de parse-uri (Fullurl)
   (let Result
-    (ne-uri-parse Fullurl '(60 (S S S I I S S S I))) # *ne_uri URI structure (60 Bytes)
-    (when (=0 (car Result)) (cadr Result)) ]
+    (ne-uri-parse Fullurl '(56 (S S S N S S S))) # *ne_uri URI structure (56 Bytes)
+    (if (=0 (car Result))
+        (cadr Result)
+        (throw-error NIL "Unable to parse URI") ]
 
 [de get-port (Scheme Port)
   (if (> Port 0)
       Port
       (ne-uri-defaultport Scheme) ]
-
-[de split-pack-path (Url)
-  (let Path (split (chop (glue "/" (cdddr Url))) "?")
-    (pack-path (pack (car Path)) (glue "?" (cdr Path))) ]
-
-[de pack-path (Path Query)
-  (pack (ne-path-escape Path)
-        (when Query
-              (pack "?" (ne-path-escape Query)) ]
 
 [de set-headers (Headers Request)
   (mapcar

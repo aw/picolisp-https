@@ -29,9 +29,6 @@
 (de ne-add-request-header (Request Name Value)
   (native `*Https "ne_add_request_header" NIL Request Name Value) )
 
-(de ne-path-escape (Path)
-  (native `*Https "ne_path_escape" 'S Path) )
-
 (de ne-session-create (Scheme Hostname Port)
   (native `*Https "ne_session_create" 'N Scheme Hostname Port) )
 
