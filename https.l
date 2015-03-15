@@ -11,7 +11,7 @@
     ("install"    "build.sh") ]
 
 (setq
-  *Https              "lib/libneon.so"
+  *Https              (pack (car (file)) "lib/libneon.so")
   *Buffer_size        8192
   *Headers            '(("Accept" . "*/*")
                         ("Accept-Charset" . "utf-8")
@@ -38,10 +38,10 @@
   *NE_REDIRECT        9 )
 
 # ffi-bindings
-(load "ffi.l")
+(load (pack (car (file)) "ffi.l"))
 
 # internal
-(load "internal.l")
+(load (pack (car (file)) "internal.l"))
 
 # initialize
 (when (=0 (ne-has-support *NE_FEATURE_SSL))
