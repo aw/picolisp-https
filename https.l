@@ -77,7 +77,7 @@
 
 [de req (Method Url Headers Filename Body)
   (let ((Session Path Request) (create-session-request Method Url Headers))
-    (let (Buffer    (set-request-body Body)
+    (let (Buffer    (set-request-body Request Body)
           Output    (request-dispatch Request Session)
           Response  (parse-response Request Url Output) )
 

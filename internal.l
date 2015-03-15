@@ -9,8 +9,12 @@
                                               (ne-get-error Session)
                                               Message ]
 
-[de random-id ()
-  (lowc (hex (abs (rand) ]
+[de create-session-request (Method Url Headers)
+  (let ((Session . Path) (create-session Url)
+        Request (ne-request-create Session Method Path) )
+
+    (set-headers Headers Request)
+    (list Session Path Request) ]
 
 [de create-session (Fullurl)
   (let (Uri     (parse-uri Fullurl)
@@ -23,13 +27,6 @@
     (when (= Scheme "https") (ne-ssl-trust-default-ca Session))
 
     (cons Session Path) ]
-
-[de create-session-request (Method Url Headers)
-  (let ((Session . Path) (create-session Url)
-        Request (ne-request-create Session Method Path) )
-
-    (set-headers Headers Request)
-    (list Session Path Request) ]
 
 [de parse-uri (Fullurl)
   (let Result
@@ -47,6 +44,16 @@
   (mapcar
     '((L) (ne-add-request-header Request (car L) (cdr L)))
     (append Headers *Headers) ]
+
+[de set-request-body (Request Body)
+  (when Body
+    (let (Size (size Body)
+          Buf (native "@" "malloc" 'N Size) )
+
+      (native "@" "memset" NIL Buf Body Size)
+      (let Buffer (native "@" "strncpy" 'N Buf Body Size)
+        (ne-set-request-body-buffer Request Buffer Size)
+        Buf ]
 
 [de request-dispatch (Request Session)
   (begin-request)
@@ -69,6 +76,12 @@
       (list (cons "Filename"  . File)
             (cons "Filesize"    (car (info File))) ]
 
+(de random-filename ()
+  (tmp (pack "dl-" (random-id) ".tmp")) )
+
+[de random-id ()
+  (lowc (hex (abs (rand) ]
+
 [de process-body (Request)
   (let Body
     [make
@@ -77,6 +90,13 @@
             0 ]
 
     (cons "Body" (pack Body)) ]
+
+[de link-response-block (Request)
+  (let Result (ne-read-response-block Request '(`*Buffer_size B . `*Buffer_size) *Buffer_size)
+    (link (pack-body Result)) ]
+
+[de pack-body (Result)
+  (pack (mapcar char (head (car Result) (cdr Result) ]
 
 [de parse-response (Request Fullurl Output)
   (let (Headers   (make (get-headers Request 0))
@@ -106,29 +126,6 @@
 (de end-session (Session)
   (ne-close-connection Session)
   (ne-session-destroy Session) )
-
-(de extract-header (Response Name)
-  (cdr (assoc Name (cdr (assoc "Headers" Response)))) )
-
-[de pack-body (Result)
-  (pack (mapcar char (head (car Result) (cdr Result) ]
-
-[de link-response-block (Request)
-  (let Result (ne-read-response-block Request '(`*Buffer_size B . `*Buffer_size) *Buffer_size)
-    (link (pack-body Result)) ]
-
-(de random-filename ()
-  (tmp (pack "dl-" (random-id) ".tmp")) )
-
-[de set-request-body (Body)
-  (when Body
-    (let (Size (size Body)
-          Buf (native "@" "malloc" 'N Size) )
-
-      (native "@" "memset" NIL Buf Body Size)
-      (let Buffer (native "@" "strncpy" 'N Buf Body Size)
-        (ne-set-request-body-buffer Request Buffer Size)
-        Buf ]
 
 # Request and Session rely on their context (dynamic scope)
 # in case of bugs, look here first ;)
