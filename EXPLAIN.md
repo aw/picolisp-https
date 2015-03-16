@@ -387,7 +387,7 @@ The real question is: when is this called? Let's get to that right now.
 
 ## Cleaning up errors
 
-Earlier, we discussed the ability to `(throw)` an error, and that's nice when something is there to catch it. But, what happens when that _thing_ doesn't know about the internals? Does it to know how to cleanly end the request, end the session, free up manually allocated buffers?
+Earlier, we discussed the ability to `(throw)` an error, and that's nice when something is there to catch it. But, what happens when that _thing_ doesn't know about the internals? Does it know how to cleanly end the request, end the session, free up manually allocated buffers?
 
 **Nope.**
 
@@ -407,7 +407,7 @@ This is our public function which does it all.
           (parse-response Request Url Output) ]
 ```
 
-The first thing we do is obtain the request `Buffer` (which may possibly be empty). Next, we have this very useful [finally](http://software-lab.de/doc/refF.html#finally) call. That's our safety net. The first argument is the "thing you do if an error is throw, or when you're done processing". The second argument is the "processing" part.
+The first thing we do is obtain the request `Buffer` (which may possibly be empty). Next, we have this very useful [finally](http://software-lab.de/doc/refF.html#finally) call. That's our safety net. The first argument is the _"thing you do if an error is throw, or when you're done processing"_. The second argument is the _"processing"_ part.
 
 In other words, if a `(throw)` is called in our code, it will execute `(end-request-session)` which cleans memory and keeps things sane. Otherwise, it runs the `(request-dispatch)` and `(parse-response)`, then (finally) it runs `(end-request-session)` before returning the response from `(parse-response)`.
 
