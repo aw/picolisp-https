@@ -387,9 +387,9 @@ The real question is: when is this called? Let's get to that right now.
 
 ## Cleaning up errors
 
-Earlier, we discussed the ability to `(throw)` and error, and that's nice when something is there to catch it. But, what happens when that _thing_ doesn't know about the internals? Does it to know cleanly end the request, end the session, free up manually allocated buffers?
+Earlier, we discussed the ability to `(throw)` an error, and that's nice when something is there to catch it. But, what happens when that _thing_ doesn't know about the internals? Does it to know how to cleanly end the request, end the session, free up manually allocated buffers?
 
-Nope.
+**Nope.**
 
 Our solution happens at the highest level in the most important function: `(req)`.
 
