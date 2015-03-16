@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.1.5 (2015-03-17)
+
+  * Version bump because it's 3am. I should sleep.
+
 ## 0.30.1.4 (2015-03-17)
 
   * Add an incrementing counter to temporary filenames, to prevent collisions
