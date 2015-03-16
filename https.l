@@ -2,7 +2,7 @@
 
 [setq MODULE_INFO
   '(("name"       "https")
-    ("version"    "0.30.1.1")
+    ("version"    "0.30.1.2")
     ("summary"    "HTTP(S) client for PicoLisp")
     ("source"     "https://github.com/aw/picolisp-https.git")
     ("author"     "Alexander Williams")
@@ -79,9 +79,8 @@
 
 [de req (Method Url Headers Filename Body)
   (let ((Session Path Request) (create-session-request Method Url Headers))
-    (let (Buffer    (set-request-body Request Body)
-          Output    (request-dispatch Request Session)
-          Response  (parse-response Request Url Output) )
-
+    (let Buffer (set-request-body Request Body)
+      (finally
         (end-request-session Request Session Buffer)
-        Response ]
+        (let Output (request-dispatch Request Session)
+          (parse-response Request Url Output) ]
