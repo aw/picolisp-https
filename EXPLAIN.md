@@ -398,12 +398,13 @@ Our solution happens at the highest level in the most important function: `(req)
 This is our public function which does it all.
 
 ```lisp
-..
-(let Buffer (set-request-body Request Body)
-  (finally
-    (end-request-session Request Session Buffer)
-    (let Output (request-dispatch Request Session)
-      (parse-response Request Url Output) ]
+[de req (Method Url Headers Filename Body)
+  (let ((Session Path Request) (create-session-request Method Url Headers))
+    (let Buffer (set-request-body Request Body)
+      (finally
+        (end-request-session Request Session Buffer)
+        (let Output (request-dispatch Request Session)
+          (parse-response Request Url Output) ]
 ```
 
 The first thing we do is obtain the request `Buffer` (which may possibly be empty). Next, we have this very useful [finally](http://software-lab.de/doc/refF.html#finally) call. That's our safety net. The first argument is the "thing you do if an error is throw, or when you're done processing". The second argument is the "processing" part.
