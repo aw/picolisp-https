@@ -88,6 +88,23 @@ pil +
 -> ("http" "test.url" "user:pass" 443 "/test/file.txt" "question=answer" "section")
 ```
 
+### Error: (req-get Url Headers Filename)
+
+Mistakes happen, and we've added a facility to catch errors when they do occur. Simply `(catch 'InternalError` and do what you want with it.
+
+```lisp
+pil +
+
+(load "https.l")
+
+(symbols 'https)
+(println
+  (catch 'InternalError
+    (req-get "https://test.url" NIL NIL) ) )
+
+-> (HttpsError . "Could not resolve hostname `test.url': Host not found")
+```
+
 ### (req-get Url Headers Filename)
 
 In this example, we try to fetch from a URL that doesn't exist, and receive a response body stored in a temporary file, status code, headers, and other useful information.
