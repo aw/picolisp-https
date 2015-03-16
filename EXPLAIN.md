@@ -39,7 +39,6 @@ To fix this, we use [file](http://software-lab.de/doc/refF.html#file):
 ```lisp
 *Https              (pack (car (file)) "lib/libneon.so")
 ```
-```
 
 What this does is load the file `lib/libneon.so` relative to the file that's loading it. 
 
