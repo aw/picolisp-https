@@ -325,13 +325,13 @@ Earlier, we looked at seeding random data, why? Well here's why:
 
 ```lisp
 (de random-filename ()
-  (tmp (pack "dl-" (random-id) ".tmp")) )
+  (tmp "dl-" (random-id) "-" (inc (0)) ".tmp") )
 
 [de random-id ()
   (lowc (hex (abs (rand) ]
 ```
 
-The `(random-filename)` function generates a string that looks like this: `dl-7d702f36.tmp`.
+The `(random-filename)` function generates a string that looks like this: `dl-7d702f36-1.tmp`.
 
 It uses [tmp](http://software-lab.de/doc/refT.html#tmp) to obtain the PicoLisp processes's temp directory, and the `(random-id)` function to generate a random id.
 

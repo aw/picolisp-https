@@ -98,11 +98,11 @@
     (let Fd (open File)
       (ne-read-response-to-fd Request Fd)
       (close Fd)
-      (list (cons "Filename"  . File)
+      (list (cons "Filename"    File)
             (cons "Filesize"    (car (info File))) ]
 
 (de random-filename ()
-  (tmp (pack "dl-" (random-id) ".tmp")) )
+  (tmp "dl-" (random-id) "-" (inc (0)) ".tmp") )
 
 [de random-id ()
   (lowc (hex (abs (rand) ]
