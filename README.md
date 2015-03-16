@@ -6,6 +6,8 @@ This library can be used to make HTTP and HTTPS requests in [PicoLisp](http://pi
 
 ![picolisp-https](https://cloud.githubusercontent.com/assets/153401/6665239/08fe38ee-cbcf-11e4-8289-603c985c1c0f.png)
 
+Please read [EXPLAIN.md](EXPLAIN.md) to learn more about PicoLisp and this HTTPS library.
+
   1. [Requirements](#requirements)
   2. [Getting Started](#getting-started)
   3. [Usage](#usage)
