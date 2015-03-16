@@ -2,8 +2,8 @@
 
 [setq MODULE_INFO
   '(("name"       "https")
-    ("version"    "0.30.1.0")
-    ("summary"    "HTTPS (Neon) ffi-bindings for PicoLisp")
+    ("version"    "0.30.1.1")
+    ("summary"    "HTTP(S) client for PicoLisp")
     ("source"     "https://github.com/aw/picolisp-https.git")
     ("author"     "Alexander Williams")
     ("license"    "MIT")
