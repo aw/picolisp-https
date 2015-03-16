@@ -43,26 +43,26 @@ The `https.l` file searches for `lib/libneon.so`, relative to its current direct
 
 All functions are publicly accessible and namespaced with `(symbols 'https)` (or the prefix: `https~`), but only the following are necessary:
 
-  * `(uriparse Url)` parses a sanitized URL into its separate parts
+  * **(uriparse Url)** parses a sanitized URL into its separate parts
     - `Url` _String_: a URL string to be parsed (does not encode the URL)
-  * `(req-get Url Headers Filename)` performs an HTTP `GET` request
+  * **(req-get Url Headers Filename)** performs an HTTP `GET` request
     - `Url` _String_: a URL string to make the HTTP request
     - `Headers` _List_: a PicoLisp list of cons pairs containing HTTP headers
     - `Filename` _String_ or _Flag (optional)_: can be a full path to a filename to store the HTTP Body content, the flag `T` to generate a random filename and store in a tmp dir (`~/.pil/tmp`), or `NIL` to return the Body in the `Response` list
-  * `(req-head Url Headers)` performs an HTTP `HEAD` request
+  * **(req-head Url Headers)** performs an HTTP `HEAD` request
     - `Url` _String_: a URL string to make the HTTP request
     - `Headers` _List_: a PicoLisp list of cons pairs containing HTTP headers
-  * `(req-post Url Headers Filename Body)` performs an HTTP `POST` request
+  * **(req-post Url Headers Filename Body)** performs an HTTP `POST` request
     - `Url` _String_: a URL string to make the HTTP request
     - `Headers` _List_: a PicoLisp list of cons pairs containing HTTP headers
     - `Filename` _String_ or _Flag (optional)_: can be a full path to a filename to store the HTTP Body content, the flag `T` to generate a random filename and store in a tmp dir (`~/.pil/tmp`), or `NIL` to return the Body in the `Response` list
     - `Body` _String_: a string to be sent as part of the HTTP body. Make sure to set the proper `Content-Type` headers.
-  * `(req-put Url Headers Filename Body)`: performs an idempotent HTTP `PUT` request (same as `POST`).
-  * `(req-delete Url Headers Filename)`: performs an HTTP `DELETE` request
+  * **(req-put Url Headers Filename Body)**: performs an idempotent HTTP `PUT` request (same as `POST`).
+  * **(req-delete Url Headers Filename)**: performs an HTTP `DELETE` request
     - `Url` _String_: a URL string to make the HTTP request
     - `Headers` _List_: a PicoLisp list of cons pairs containing HTTP headers
     - `Filename` _String_ or _Flag (optional)_: can be a full path to a filename to store the HTTP Body content, the flag `T` to generate a random filename and store in a tmp dir (`~/.pil/tmp`), or `NIL` to return the Body in the `Response` list
-  * `(req Method Url Headers Filename Body)`: performs an HTTP requeste using the `Method` you provide. The arguments to `req` are the same as the convenience methods list above.
+  * **(req Method Url Headers Filename Body)**: performs an HTTP requeste using the `Method` you provide. The arguments to `req` are the same as the convenience methods list above.
 
 ### Notes
 
@@ -142,7 +142,7 @@ pil +
 
 (symbols 'https)
 (pretty
-  (req-get "http://software-lab.de/COPYING" NIL) )
+  (req-get "http://software-lab.de/donate.html" NIL) )
 
 -> (("Body" . "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/1998/REC-html40-19980424/loose.dtd\">^J<html lang=\"en\">^J<head>
 ^J<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">^J<title>Donate to PicoLisp</title>^J<link rel=\"stylesheet\" href=\"doc/doc.css\" type=\"t
