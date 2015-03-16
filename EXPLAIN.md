@@ -67,7 +67,7 @@ Our approach is simple: perform initialization tasks after loading all the neces
 
 What we've done here is try to ensure `SSL` is compiled into the shared library. If it's not, an error is thrown. [Error handling](#error-handling) is explained in the next section.
 
-We also ensure to [seed](http://software-lab.de/doc/refS.html#seed) some random data from the system's PRNG:
+We also ensure to [seed](http://software-lab.de/doc/refS.html#seed) some random data from the system's random pool:
 
 ```lisp
 (seed (in "/dev/urandom" (rd 20)))
