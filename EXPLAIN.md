@@ -315,7 +315,7 @@ This is a cool function. It checks if the `Filename` is set to `T`. If yes, then
             (cons "Filesize"    (car (info File))) ]
 ```
 
-We use [open](http://software-lab.de/doc/refO.html#open) and [close](http://software-lab.de/doc/refC.html#close) when working with file descriptors. The `(ne-read-response-to-d)` function is designed to write to the response body to a file descriptor. How convenient.
+We use [open](http://software-lab.de/doc/refO.html#open) and [close](http://software-lab.de/doc/refC.html#close) when working with files. The `(ne-read-response-to-fd)` function is designed to write the response body to a file descriptor. How convenient.
 
 Finally, we return a list with two cons pairs, one containing the Filename (potentially randomly generated) and the other containing the Filesize, which is captured using the [info](http://software-lab.de/doc/refI.html#info) function.
 
