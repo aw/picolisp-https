@@ -92,7 +92,7 @@ My idea was:
                                               Message ]
 ```
 
-The **Neon C library** has a function (`ne-get-error`) which returns a string containing an error message (if any). Sometimes, we want to provide our own error message though.
+The **Neon C library** has a function `(ne-get-error)` which returns a string containing an error message (if any). Sometimes, we want to provide our own error message though.
 
 In the `(throw-error)` function, we satisfy the first two requirements by using [throw](http://software-lab.de/doc/refT.html#throw) to send an `'InternalError`, along with a [cons](http://software-lab.de/doc/refC.html#cons) pair containing the `'HttpsError` _type_ in the [car](http://software-lab.de/doc/refC.html#car) and the error _message_ in the [cdr](http://software-lab.de/doc/refC.html#cdr).
 
@@ -258,7 +258,7 @@ The reason for this is due to an _interesting_ coding choice used in the **Neon*
 
 We'll first obtain the [size](http://software-lab.de/doc/refS.html#size) of the request body. We do this for safety, and because it makes us feel warm inside.
 
-Since **Neon** is a bit strange, we're forced to manually allocate a buffer for the request body. You can see lots of funky C stuff in there.
+Since we're forced to manually allocate a buffer for the request body, you can see lots of funky C stuff in there.
 
 In the end though, we're able to send a perfectly good request body (`Buffer`) in our HTTP(S) request.
 
@@ -288,11 +288,11 @@ The **Neon** C library provides a function to dispatch HTTP(S) requests, except 
 
 In this function, we've got an infinite [loop](http://software-lab.de/doc/refL.html#loop) which tries to make a request, save the **response body** to a file or whatever, and exits the loop when all is good.
 
-The `(end-request)` function implements a _retry_ mechanism, and returns either `T` or `NIL` (or throws an error). If the result is `T`, we execute `'done`, which is nothing really, and returns the response body. Otherwise it loops.
+The `(end-request)` function implements a _retry_ mechanism, and returns either `T` or `NIL` (or throws an error). If the result is `T`, we execute `'done`, which is nothing really, and return the response body. Otherwise it loops.
 
 There's something _very_ different in this function though. Do you see it?
 
-The `Filename` variable is not sent as an argument to the function. So, how does it work? If you look at the `(req)` function in `https.l`, you'll see the filename is (optionally) set as an argument. Our `(request-dispatch)` function uses the `Filename` variable from there.
+The `Filename` variable is not sent as an argument to the function. So, how does it work? If you look at the [req](#req) function, you'll see the filename is (optionally) set as an argument. Our `(request-dispatch)` function uses the `Filename` variable from there.
 
 This is called `dynamic scoping`, one of the great advantages of PicoLisp. You can do stuff like that.
 
