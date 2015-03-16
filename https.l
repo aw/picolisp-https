@@ -26,6 +26,8 @@
   *NE_FEATURE_I18N    7
   *NE_FEATURE_SSPI    8
 
+  *NE_ABUFSIZ         256
+
   *NE_OK              0
   *NE_ERROR           1
   *NE_LOOKUP          2

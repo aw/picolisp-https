@@ -20,9 +20,12 @@
   (let (Uri     (parse-uri Fullurl)
         Scheme  (car Uri)
         Host    (cadr Uri)
+        Auth    (; Uri 3)
         Port    (get-port Scheme (; Uri 4))
         Session (ne-session-create Scheme Host Port)
         Path    (pack (; Uri 5) (when (; Uri 6) (pack "?" (; Uri 6)))) )
+
+    (set-auth-credentials Session Auth)
 
     (when (= Scheme "https") (ne-ssl-trust-default-ca Session))
 
@@ -40,6 +43,26 @@
       Port
       (ne-uri-defaultport Scheme) ]
 
+[de set-auth-credentials (Session Auth)
+  [let Credentials (split (chop Auth) ":")
+    (setq *User (pack (car Credentials))
+          *Pass (pack (cdr Credentials)) ]
+
+  (ne-set-server-auth
+    Session
+    (lisp 'ne_auth_creds '((A B C D E) (do-auth A B C D E)))
+    0 ]
+
+(de do-auth (Userdata Realm Attempt Username Password)
+  (native "@" "strncpy" NIL Username *User *NE_ABUFSIZ)
+  (native "@" "strncpy" NIL Password *Pass *NE_ABUFSIZ)
+  Attempt )
+
+[de del-auth-credentials (Session)
+  (ne-forget-auth Session)
+  (off *User)
+  (off *Pass) ]
+
 [de set-headers (Headers Request)
   (mapcar
     '((L) (ne-add-request-header Request (car L) (cdr L)))
@@ -56,13 +79,15 @@
         Buf ]
 
 [de request-dispatch (Request Session)
-  (begin-request)
+  (use Body
+    (loop
+      (begin-request)
 
-  (let Body (if Filename
-                (download-file Request Filename)
-                (process-body Request) )
+      (setq Body (if Filename
+                    (download-file Request Filename)
+                    (process-body Request) ) )
 
-    (end-request)
+        (T (end-request) 'done) )
     Body ]
 
 [de download-file (Request Filename)
@@ -121,6 +146,7 @@
 (de end-request-session (Request Session Buffer)
   (when Buffer (native "@" "free" NIL Buffer))
   (ne-request-destroy Request)
+  (del-auth-credentials Session)
   (end-session Session) )
 
 (de end-session (Session)
@@ -135,7 +161,7 @@
 
 [de end-request ()
   (let Result (ne-end-request Request)
-    (cond ((= *NE_RETRY Result) (wait 1000)
-                                (request-dispatch Request Session) )
+    (cond ((= *NE_RETRY Result) (wait 1000) NIL)
           ((unless  (= *NE_OK Result)
-                    (throw-error Session) ]
+                    (throw-error Session) ) )
+          (T T) ]

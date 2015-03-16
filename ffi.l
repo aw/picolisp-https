@@ -82,3 +82,9 @@
                                                    (cons 'Value &value 0) )
       Name
       Value ]
+
+(de ne-set-server-auth (Session Creds_cb Userdata)
+  (native `*Https "ne_set_server_auth" NIL Session Creds_cb Userdata) )
+
+(de ne-forget-auth (Session)
+  (native `*Https "ne_forget_auth" NIL Session) )
