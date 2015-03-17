@@ -47,20 +47,20 @@ All functions are publicly accessible and namespaced with `(symbols 'https)` (or
     - `Url` _String_: a URL string to be parsed (does not encode the URL)
   * **(req-get Url Headers Filename)** performs an HTTP `GET` request
     - `Url` _String_: a URL string to make the HTTP request
-    - `Headers` _List_: a PicoLisp list of cons pairs containing HTTP headers
+    - `Headers` _List (optional)_: a PicoLisp list of cons pairs containing HTTP headers
     - `Filename` _String_ or _Flag (optional)_: can be a full path to a filename to store the HTTP Body content, the flag `T` to generate a random filename and store in a tmp dir (`~/.pil/tmp`), or `NIL` to return the Body in the `Response` list
   * **(req-head Url Headers)** performs an HTTP `HEAD` request
     - `Url` _String_: a URL string to make the HTTP request
-    - `Headers` _List_: a PicoLisp list of cons pairs containing HTTP headers
+    - `Headers` _List (optional)_: a PicoLisp list of cons pairs containing HTTP headers
   * **(req-post Url Headers Filename Body)** performs an HTTP `POST` request
     - `Url` _String_: a URL string to make the HTTP request
-    - `Headers` _List_: a PicoLisp list of cons pairs containing HTTP headers
+    - `Headers` _List (optional)_: a PicoLisp list of cons pairs containing HTTP headers
     - `Filename` _String_ or _Flag (optional)_: can be a full path to a filename to store the HTTP Body content, the flag `T` to generate a random filename and store in a tmp dir (`~/.pil/tmp`), or `NIL` to return the Body in the `Response` list
-    - `Body` _String_: a string to be sent as part of the HTTP body. Make sure to set the proper `Content-Type` headers.
+    - `Body` _String (optional)_: a string to be sent as part of the HTTP body. Make sure to set the proper `Content-Type` headers.
   * **(req-put Url Headers Filename Body)**: performs an idempotent HTTP `PUT` request (same as `POST`).
   * **(req-delete Url Headers Filename)**: performs an HTTP `DELETE` request
     - `Url` _String_: a URL string to make the HTTP request
-    - `Headers` _List_: a PicoLisp list of cons pairs containing HTTP headers
+    - `Headers` _List (optional)_: a PicoLisp list of cons pairs containing HTTP headers
     - `Filename` _String_ or _Flag (optional)_: can be a full path to a filename to store the HTTP Body content, the flag `T` to generate a random filename and store in a tmp dir (`~/.pil/tmp`), or `NIL` to return the Body in the `Response` list
   * **(req Method Url Headers Filename Body)**: performs an HTTP requeste using the `Method` you provide. The arguments to `req` are the same as the convenience methods list above.
 
