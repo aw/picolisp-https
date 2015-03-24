@@ -1,6 +1,6 @@
 # HTTP(S) client for PicoLisp
 
-[![GitHub release](https://img.shields.io/github/release/aw/picolisp-https.svg)](https://github.com/aw/picolisp-https) [![Dependency](https://img.shields.io/badge/[deps] Neon-0.30.1-ff69b4.svg)](https://github.com/aw/neon-unofficial-mirror)
+[![GitHub release](https://img.shields.io/github/release/aw/picolisp-https.svg)](https://github.com/aw/picolisp-https) [![Build Status](https://travis-ci.org/aw/picolisp-https.svg?branch=master)](https://travis-ci.org/aw/picolisp-https) [![Dependency](https://img.shields.io/badge/[deps] Neon-0.30.1-ff69b4.svg)](https://github.com/aw/neon-unofficial-mirror)
 
 This library can be used to make HTTP and HTTPS requests in [PicoLisp](http://picolisp.com), with support for authentication.
 
@@ -12,9 +12,10 @@ Please read [EXPLAIN.md](EXPLAIN.md) to learn more about PicoLisp and this HTTPS
   2. [Getting Started](#getting-started)
   3. [Usage](#usage)
   4. [Examples](#examples)
-  5. [Alternatives](#alternatives)
-  6. [Contributing](#contributing)
-  7. [License](#license)
+  5. [Testing](#testing)
+  6. [Alternatives](#alternatives)
+  7. [Contributing](#contributing)
+  8. [License](#license)
 
 # Requirements
 
@@ -39,9 +40,15 @@ Once compiled, the shared library is symlinked as:
 
 The `https.l` file searches for `lib/libneon.so`, relative to its current directory.
 
+### Updating
+
+This library uses git submodules, type this keep everything updated:
+
+    ./update.sh
+
 # Usage
 
-All functions are publicly accessible and namespaced with `(symbols 'https)` (or the prefix: `https~`), but only the following are necessary:
+Only the following functions are exported publicly, and namespaced with `(symbols 'https)` (or the prefix: `https~`):
 
   * **(uriparse Url)** parses a sanitized URL into its separate parts
     - `Url` _String_: a URL string to be parsed (does not encode the URL)
@@ -63,6 +70,8 @@ All functions are publicly accessible and namespaced with `(symbols 'https)` (or
     - `Headers` _List (optional)_: a PicoLisp list of cons pairs containing HTTP headers
     - `Filename` _String_ or _Flag (optional)_: can be a full path to a filename to store the HTTP Body content, the flag `T` to generate a random filename and store in a tmp dir (`~/.pil/tmp`), or `NIL` to return the Body in the `Response` list
   * **(req Method Url Headers Filename Body)**: performs an HTTP requeste using the `Method` you provide. The arguments to `req` are the same as the convenience methods list above.
+
+> **Note:** These functions are not namespace [local symbols](http://software-lab.de/doc/refL.html#local), which means they would redefine symbols with the same name in the `'pico` namespace
 
 ### Notes
 
@@ -261,6 +270,12 @@ s>^J")
    ("Headers" ("date" . "Mon, 16 Mar 2015 11:09:29 GMT") ("content-length" . "1459") ("alternate-protocol" . "443:quic,p=0.5") ("server" . "GFE/2.0") ("content-type
 " . "text/html; charset=UTF-8")) )
 ```
+
+# Testing
+
+This library now comes with full [unit tests](https://github.com/aw/picolisp-unit). To run the tests, run:
+
+    ./test.l
 
 # Alternatives
 

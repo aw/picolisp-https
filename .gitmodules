@@ -2,3 +2,6 @@
 	path = vendor/neon
 	url = https://github.com/aw/neon-unofficial-mirror.git
 	ignore = dirty
+[submodule "vendor/picolisp-unit"]
+	path = vendor/picolisp-unit
+	url = https://github.com/aw/picolisp-unit.git

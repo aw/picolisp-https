@@ -1,14 +1,14 @@
+# https.l
+#
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
+
 (symbols 'https 'pico)
 
-[setq MODULE_INFO
-  '(("name"       "https")
-    ("version"    "0.30.1.5")
-    ("summary"    "HTTP(S) client for PicoLisp")
-    ("source"     "https://github.com/aw/picolisp-https.git")
-    ("author"     "Alexander Williams")
-    ("license"    "MIT")
-    ("copyright"  "(c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>")
-    ("install"    "build.sh") ]
+(load (pack (car (file)) "local.l"))
+
+(load (pack (car (file)) "module.l"))
 
 (setq
   *Https              (pack (car (file)) "lib/libneon.so")

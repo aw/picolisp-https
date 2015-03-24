@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.30.1.6 (2015-03-24)
+
+  * Add unit tests and automated testing with travis-ci
+  * Move MODULE_INFO to module.l
+  * Update README.md
+  * Prevent leaky namespace globals
+  * Add update.sh script
+
 ## 0.30.1.5 (2015-03-17)
 
   * Version bump because it's 3am. I should sleep.
