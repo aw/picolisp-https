@@ -44,7 +44,7 @@
 [de test-get-url ()
   (unit~assert-equal  '("Url" . "http://software-lab.de/donate.html")
                       (assoc "Url" *Donate_page)
-                      "Returns the URL of the donate page for PicoLisp" ]
+                      "Returns the URL of the donate page 'http://software-lab.de/donate.html' for PicoLisp" ]
 
 [de test-head-nobody ()
   (unit~assert-nil  (cdr (assoc "Body" *404_page))

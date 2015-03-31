@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.1.7 (2015-03-31)
+
+  * Update picolisp-unit to v0.5.2
+
 ## 0.30.1.6 (2015-03-24)
 
   * Add unit tests and automated testing with travis-ci
