@@ -1,6 +1,6 @@
 # HTTP(S) client for PicoLisp
 
-[![GitHub release](https://img.shields.io/github/release/aw/picolisp-https.svg)](https://github.com/aw/picolisp-https) [![Build Status](https://travis-ci.org/aw/picolisp-https.svg?branch=master)](https://travis-ci.org/aw/picolisp-https) [![Dependency](https://img.shields.io/badge/[deps] Neon-0.30.1-ff69b4.svg)](https://github.com/aw/neon-unofficial-mirror) [![Dependency](https://img.shields.io/badge/[deps] picolisp--unit-v0.5.2-ff69b4.svg)](https://github.com/aw/picolisp-unit.git)
+[![GitHub release](https://img.shields.io/github/release/aw/picolisp-https.svg)](https://github.com/aw/picolisp-https) [![Build Status](https://travis-ci.org/aw/picolisp-https.svg?branch=master)](https://travis-ci.org/aw/picolisp-https) [![Dependency](https://img.shields.io/badge/[deps] Neon-0.30.1-ff69b4.svg)](https://github.com/aw/neon-unofficial-mirror) [![Dependency](https://img.shields.io/badge/[deps] picolisp--unit-v0.6.0-ff69b4.svg)](https://github.com/aw/picolisp-unit.git)
 
 This library can be used to make HTTP and HTTPS requests in [PicoLisp](http://picolisp.com), with support for authentication.
 
