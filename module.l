@@ -1,6 +1,6 @@
 [de MODULE_INFO
   ("name"       "https")
-  ("version"    "0.30.1.8")
+  ("version"    "0.30.1.9")
   ("summary"    "HTTP(S) client for PicoLisp")
   ("source"     "https://github.com/aw/picolisp-https.git")
   ("author"     "Alexander Williams")

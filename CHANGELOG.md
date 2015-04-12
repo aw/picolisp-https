@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.1.9 (2015-04-12)
+
+  * Update picolisp-unit to v0.6.1
+
 ## 0.30.1.8 (2015-04-08)
 
   * Update picolisp-unit to v0.6.0
