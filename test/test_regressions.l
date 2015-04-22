@@ -2,7 +2,7 @@
 
 # Download files fails - https://github.com/aw/picolisp-https/issues/5
 [de test-gh-issue-5 ()
-  '(assert-throws
+  (unit~assert-throws
       'InternalError
       '(HttpsError . "Unable to write to file: /dev/non-existant-file")
       '(download-file NIL "/dev/non-existant-file")
