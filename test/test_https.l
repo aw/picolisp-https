@@ -1,9 +1,3 @@
-(load "../https.l")
-
-(prinl "^J  Testing HTTP(S) client for PicoLisp^J")
-
-(symbols 'https)
-
 (setq
   *My_tests_are_order_dependent NIL
   *Https_output (req-get "https://google.com/404" NIL T)

@@ -96,6 +96,7 @@
                 Filename )
 
     (let Fd (open File)
+      (unless Fd (throw-error NIL (pack "Unable to write to file: " File)))
       (ne-read-response-to-fd Request Fd)
       (close Fd)
       (list (cons "Filename"    File)
