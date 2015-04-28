@@ -32,8 +32,8 @@ $(TEST_DIR):
 
 $(BUILD_DIR)/$(TARGET):
 		cd $(BUILD_DIR) && \
-		./autogen.sh
-		./configure $(BFLAGS)
+		./autogen.sh && \
+		./configure $(BFLAGS) && \
 		$(COMPILE) && \
 		strip --strip-unneeded $(LIB_DIR)/$(TARGET)
 
