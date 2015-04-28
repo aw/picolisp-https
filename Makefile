@@ -1,4 +1,4 @@
-# picolisp-json Makefile
+# Makefile
 
 PIL_MODULE_DIR ?= .modules
 PIL_SYMLINK_DIR ?= .lib
