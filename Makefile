@@ -20,7 +20,7 @@ COMPILE = make
 
 .PHONY: all clean
 
-all: $(BUILD_DIR) $(BUILD_DIR)/$(TARGET) symlink
+all: $(BUILD_DIR) $(BUILD_DIR)/$(LIB_DIR)/$(TARGET) symlink
 
 $(BUILD_DIR):
 		mkdir -p $(BUILD_DIR) && \
@@ -30,7 +30,7 @@ $(TEST_DIR):
 		mkdir -p $(TEST_DIR) && \
 		git clone $(TEST_REPO) $(TEST_DIR)
 
-$(BUILD_DIR)/$(TARGET):
+$(BUILD_DIR)/$(LIB_DIR)/$(TARGET):
 		cd $(BUILD_DIR) && \
 		./autogen.sh && \
 		./configure $(BFLAGS) && \
@@ -48,7 +48,7 @@ run-tests:
 		./test.l
 
 clean:
-		cd $(BUILD_DIR) && \
+		cd $(BUILD_DIR)/$(LIB_DIR) && \
 		rm -f $(TARGET) && \
 		cd - && \
 		cd $(PIL_SYMLINK_DIR) && \
