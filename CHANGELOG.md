@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.30.1.11 (2015-04-28)
+
+  * Remove the need for git submodules
+  * Add Makefile for fetching and building dependencies
+  * Change default path for dependencies and shared module (.modules and .lib)
+  * Adjust README.md, tests and travis-ci unit testing config
+
 ## 0.30.1.10 (2015-04-22)
 
   * Fix bug where downloading a file to an inexistant dir fails horribly

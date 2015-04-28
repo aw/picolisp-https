@@ -2,20 +2,14 @@
 #
 # Copyright (c) 2015 Alexander Williams, Unscramble <license@unscramble.jp>
 # MIT License
+#
+# For backwards compatibility
 
 set -u
 set -e
 
-git submodule init
-git submodule update
+# cleanup artifacts
+rm -rf lib vendor
 
-cd vendor/neon
-  ./autogen.sh
-  ./configure --enable-shared --with-ssl=openssl --enable-threadsafe-ssl=posix
-  make
-cd -
-
-cd lib
-  rm -f libneon.so
-  ln -s ../vendor/neon/src/.libs/libneon.so libneon.so
-cd -
+# rebuild
+make

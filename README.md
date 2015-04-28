@@ -26,9 +26,9 @@ Please read [EXPLAIN.md](EXPLAIN.md) to learn more about PicoLisp and this HTTPS
 
 # Getting Started
 
-These FFI bindings require the [Neon C library](http://www.webdav.org/neon/), compiled as a shared library. It is included here as a [git submodule](http://git-scm.com/book/en/v2/Git-Tools-Submodules).
+These FFI bindings require the [Neon C library](http://www.webdav.org/neon/), compiled as a shared library.
 
-  1. Type `./build.sh` to pull and compile the _Neon C Library_.
+  1. Type `make` to pull and compile the _Neon C Library_.
   2. Include `https.l` in your project (it loads `ffi.l` and `internal.l`).
   3. Try the [examples](#examples) below
 
@@ -36,15 +36,15 @@ These FFI bindings require the [Neon C library](http://www.webdav.org/neon/), co
 
 Once compiled, the shared library is symlinked as:
 
-    lib/libneon.so -> vendor/neon/src/.libs/libneon.so
+    .lib/libneon.so -> .modules/neon/HEAD/src/.libs/libneon.so
 
-The `https.l` file searches for `lib/libneon.so`, relative to its current directory.
+The `https.l` file searches for `.lib/libneon.so`, relative to its current directory.
 
 ### Updating
 
-This library uses git submodules, type this keep everything updated:
+To keep everything updated, type:
 
-    ./update.sh
+    git pull && make clean && make
 
 # Usage
 
@@ -273,9 +273,9 @@ s>^J")
 
 # Testing
 
-This library now comes with full [unit tests](https://github.com/aw/picolisp-unit). To run the tests, run:
+This library now comes with full [unit tests](https://github.com/aw/picolisp-unit). To run the tests, type:
 
-    ./test.l
+    make check
 
 # Alternatives
 

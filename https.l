@@ -11,7 +11,7 @@
 (load (pack (car (file)) "module.l"))
 
 (setq
-  *Https              (pack (car (file)) "lib/libneon.so")
+  *Https              (pack (car (file)) ".lib/libneon.so")
   *Buffer_size        8192
   *Headers            '(("Accept" . "*/*")
                         ("Accept-Charset" . "utf-8")
