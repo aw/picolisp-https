@@ -6,6 +6,7 @@ PIL_SYMLINK_DIR ?= .lib
 ## Edit below
 BUILD_REPO = https://github.com/aw/neon-unofficial-mirror.git
 BUILD_DIR = $(PIL_MODULE_DIR)/neon/HEAD
+BUILD_REF = 0.30.1
 LIB_DIR = src/.libs
 TARGET = libneon.so
 BFLAGS = --enable-shared --with-ssl=openssl --enable-threadsafe-ssl=posix
@@ -32,6 +33,7 @@ $(TEST_DIR):
 
 $(BUILD_DIR)/$(LIB_DIR)/$(TARGET):
 		cd $(BUILD_DIR) && \
+		git checkout $(BUILD_REF) && \
 		./autogen.sh && \
 		./configure $(BFLAGS) && \
 		$(COMPILE) && \
