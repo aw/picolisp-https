@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.1.12 (2015-06-15)
+
+  * Update picolisp-unit to v1.0.0
+
 ## 0.30.1.11 (2015-04-28)
 
   * Remove the need for git submodules
