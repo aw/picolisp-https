@@ -1,3 +1,7 @@
+# WARNING: DEPRECATED
+
+I don't use this anymore, and don't plan on maintaining it. Please use at your own risk.
+
 # HTTP(S) client for PicoLisp
 
 [![GitHub release](https://img.shields.io/github/release/aw/picolisp-https.svg)](https://github.com/aw/picolisp-https) [![Build Status](https://travis-ci.org/aw/picolisp-https.svg?branch=master)](https://travis-ci.org/aw/picolisp-https) [![Dependency](https://img.shields.io/badge/[deps] Neon-0.30.1-ff69b4.svg)](https://github.com/aw/neon-unofficial-mirror) [![Dependency](https://img.shields.io/badge/[deps] picolisp--unit-v1.0.0-ff69b4.svg)](https://github.com/aw/picolisp-unit.git)
@@ -20,6 +24,7 @@ Please read [EXPLAIN.md](EXPLAIN.md) to learn more about PicoLisp and this HTTPS
 # Requirements
 
   * PicoLisp 64-bit v3.1.9+
+  * Tested up to PicoLisp v16.12
   * Git
   * UNIX/Linux development/build tools (gcc, make/gmake, etc..)
   * OpenSSL
